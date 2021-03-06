@@ -5,7 +5,13 @@ from datetime import datetime
 from slacker import Slacker
 import time, calendar
 
-slack = Slacker('xoxb-1599488979396-1599580656724-eMdpvk8bM93pfeWs1wZngu97')
+# slack Oauth 코드 불러오기 시작
+f = open("slack.txt", 'r')
+slackoauth = f.readline()
+f.close()
+# slack Oauth 코드 불러오기 끝
+
+slack = Slacker(slackoauth)
 def dbgout(message):
     """인자로 받은 문자열을 파이썬 셸과 슬랙으로 동시에 출력한다."""
     print(datetime.now().strftime('[%m/%d %H:%M:%S]'), message)
@@ -44,7 +50,7 @@ def check_creon_system():
         return False
     return True
 
-# 여기서부터
+# 종목 조회 및 추가 시작
 objRq = win32com.client.Dispatch("CpSysDib.CpSvrNew7043")
 objRq.SetInputValue(0, ord('0')) # 거래소 + 코스닥
 objRq.SetInputValue(1, ord('6'))  # 신고
@@ -60,12 +66,12 @@ cnt = objRq.GetHeaderValue(0)  # 해당 종목 건수
 retcode = []
 
 for i in range(cnt):
-    slist = objRq.GetDataValue(0, i)  # 코드
+    slist = objRq.GetDataValue(0, i)  # 종목코드
     retcode.append(slist)
-    if len(retcode) >=  11:       # 최대 10 종목만,
+    if len(retcode) >=  11:       # 10 종목시 11 입력(원하는 종목 수 입력)
         break
     name = objRq.GetDataValue(1, i)  # 종목명
-#여기까지가 내가 짠 코드
+# 종목 조회 및 추가 끝
 
 def get_current_price(code):
     """인자로 받은 종목의 현재가, 매수호가, 매도호가를 반환한다."""

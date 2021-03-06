@@ -8,19 +8,13 @@ os.system('wmic process where "name like \'%coStarter%\'" call terminate')
 os.system('wmic process where "name like \'%CpStart%\'" call terminate')
 time.sleep(5)
 
+# 아이디 패스워드 추가사항 시작
 f = open("idpwd.txt", 'r')
 line = f.readline()
 a = line.split(',')
-# print(a[0])
 ids = a[0]
 pwds = a[1]
 pwdcerts = a[2]
-# print(ids)
-# print(pwds)
-# print(pwdcerts)
-# print(type(ids))
-# print(type(pwds))
-# print(type(pwdcerts))
 f.close()
 
 a = "C:\CREON\STARTER\coStarter.exe /prj:cp /id:"
@@ -28,8 +22,7 @@ b = " /pwd:"
 c = " /pwdcert:"
 d = " /autostart"
 address = a + ids + b + pwds + c + pwdcerts + d
-# print(address)
-# print(type(address))
+# 아이디 패스워드 추가사항 끝
 
 app = application.Application()
 app.start(address)
